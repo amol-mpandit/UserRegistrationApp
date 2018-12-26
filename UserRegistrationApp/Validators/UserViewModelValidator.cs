@@ -17,6 +17,9 @@ namespace UserRegistrationApp.Validators
             RuleFor(x => x.Phone).NotEmpty();
             RuleFor(x => x.Password).NotEmpty();
             RuleFor(x => x.Email).EmailAddress();
+            RuleFor(x => x.ConfirmPassword)
+                .Equal(x => x.Password)
+                .WithMessage("Password and ConfirmPassword do not match");
         }
     }
 }

@@ -6,10 +6,10 @@ using UserRegistrationApp.Models;
 using System.Collections.Generic;
 using AutoMapper;
 using UserRegistrationApp.Validators;
-using System.ComponentModel.DataAnnotations;
 
 namespace UserRegistrationApp.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly UserRepository _userRepository;
@@ -64,7 +64,7 @@ namespace UserRegistrationApp.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,userName,FirstName,MiddleName,LastName,Email,Phone,Address,Password")] UserViewModel user)
+        public ActionResult Create([Bind(Include = "Id,userName,FirstName,MiddleName,LastName,Email,Phone,Address,Password,ConfirmPassword")] UserViewModel user)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace UserRegistrationApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,userName,FirstName,MiddleName,LastName,Email,Phone,Address,Password")] UserViewModel user)
+        public ActionResult Edit([Bind(Include = "Id,userName,FirstName,MiddleName,LastName,Email,Phone,Address,Password,ConfirmPassword")] UserViewModel user)
         {
             if (ModelState.IsValid)
             {
