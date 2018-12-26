@@ -34,6 +34,7 @@ namespace UserRegistrationApp.DependencyResolution {
 					scan.With(new ControllerConvention());
                 });
             //For<IExample>().Use<Example>();
+
             For<IDbConnection>()
                 .Use(new SqlConnection(
                     ConfigurationManager.ConnectionStrings["userRegistrationAppConnectionString"].ConnectionString)).Singleton();

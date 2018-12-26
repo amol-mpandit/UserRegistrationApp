@@ -1,11 +1,7 @@
 USE [UserRegistrationApp]
 GO
 
-/****** Object:  Table [dbo].[Users]    Script Date: 26-12-2018 12:53:42 AM ******/
-DROP TABLE [dbo].[Users]
-GO
-
-/****** Object:  Table [dbo].[Users]    Script Date: 26-12-2018 12:53:42 AM ******/
+/****** Object:  Table [dbo].[Users]    Script Date: 27-12-2018 12:01:43 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -25,6 +21,10 @@ CREATE TABLE [dbo].[Users](
  CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [Unique_UserName] UNIQUE NONCLUSTERED 
+(
+	[UserName] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 

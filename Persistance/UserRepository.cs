@@ -114,5 +114,25 @@ namespace Persistance
             EnsureDbConnectionIsOpen();
             return Connection.QuerySingleOrDefault<string>(query);
         }
+
+        public User GetUserBy(string userNameOrEmail)
+        {
+            const string query = @"
+                                   SELECT [Id]
+                                  ,[FirstName]
+                                  ,[MiddleName]
+                                  ,[LastName]
+                                  ,[Email]
+                                  ,[Address]
+                                  ,[Phone]
+                                  ,[Password]
+                                  ,[UserName]
+                              FROM [UserRegistrationApp].[dbo].[Users]
+                              WHERE UserName = @userNameOrEmail 
+                              OR    Email = @userNameOrEmail
+                                  ";
+            EnsureDbConnectionIsOpen();
+            return Connection.QuerySingleOrDefault<User>(query);
+        }
     }
 }

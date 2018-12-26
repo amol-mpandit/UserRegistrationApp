@@ -1,13 +1,22 @@
-﻿using System.Web.Mvc;
+﻿using Persistance;
+using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 using UserRegistrationApp.Models;
+using UserRegistrationApp.Validators;
 
 namespace UserRegistrationApp.Controllers
 {
     public class SecurityController : Controller
     {
-        
+        private readonly LoginViewModelValidator _loginViewModelValidator;
+        private readonly UserRepository _userRepository;
+        public SecurityController(UserRepository userRepository, 
+                                  LoginViewModelValidator loginViewModelValidator)
+        {
+            _loginViewModelValidator = loginViewModelValidator;
+            _userRepository = userRepository;
+        }
         public ActionResult Login()
         {
             return View();
@@ -19,7 +28,20 @@ namespace UserRegistrationApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                FormsAuthentication.SetAuthCookie(userLogin.UserName,true);
+                var user = _userRepository.GetUserBy(userLogin.UserName);
+                if (user == null)
+                {
+                    ModelState.AddModelError("InvalidUser", "User Not exist!");
+                    return View();
+                }
+                else if(user.Password != userLogin.Password)
+                {
+                    ModelState.AddModelError("PasswordError", "Incorrect Password!");
+                    return View();
+                }
+
+                FormsAuthentication.SetAuthCookie(user.Id,true);
+
                 return Redirect(Url.Action("Index", "Home"));
             }
 

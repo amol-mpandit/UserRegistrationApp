@@ -208,6 +208,7 @@
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\LoginViewModelValidator.cs" />
     <Compile Include="Validators\UserViewModelValidator.cs" />
     <Compile Include="Validators\ValidatorFactory.cs" />
   </ItemGroup>
