@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace Core
+﻿namespace UserRegistrationApp.Models
 {
-    public class User
+    public class UserViewModel
     {
         public int Id { get; set; }
         public string UserName { get; set; }
@@ -13,10 +11,5 @@ namespace Core
         public long Phone { get; set; }
         public string Address { get; set; }
         public string Password { get; set; }
-    }
-
-    public class Users
-    {
-        public List<User> AllUsers { get; set; }
     }
 }

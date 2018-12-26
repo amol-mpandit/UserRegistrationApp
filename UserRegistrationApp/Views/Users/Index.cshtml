@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Core.User>
+﻿@model IEnumerable<UserRegistrationApp.Models.UserViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -12,7 +12,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.userName)
+            @Html.DisplayNameFor(model => model.UserName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FirstName)
@@ -41,7 +41,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.userName)
+            @Html.DisplayFor(modelItem => item.UserName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.FirstName)

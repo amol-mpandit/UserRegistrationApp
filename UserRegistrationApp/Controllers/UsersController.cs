@@ -2,23 +2,37 @@
 using System.Web.Mvc;
 using Core;
 using Persistance;
+using UserRegistrationApp.Models;
+using System.Collections.Generic;
+using AutoMapper;
+using UserRegistrationApp.Validators;
+using System.ComponentModel.DataAnnotations;
 
 namespace UserRegistrationApp.Controllers
 {
     public class UsersController : Controller
     {
-        private UserRepository _userRepository;
+        private readonly UserRepository _userRepository;
+        private readonly UserViewModelValidator _userViewModelValidator;
 
-        public UsersController(UserRepository userRepository)
+        public UsersController(UserRepository userRepository, 
+                               UserViewModelValidator userViewModelValidator)
         {
             _userRepository = userRepository;
+            _userViewModelValidator = userViewModelValidator;
         }
 
         // GET: Users
         public ActionResult Index()
         {
             var users = _userRepository.GetAllUser();
-            return View(users);
+            var userViewModelList = new List<UserViewModel>();
+            foreach (var user in users)
+            {
+                var userViewModel = Mapper.Map<UserViewModel>(user);
+                userViewModelList.Add(userViewModel);
+            }
+            return View(userViewModelList);
         }
 
         // GET: Users/Details/5
@@ -28,12 +42,14 @@ namespace UserRegistrationApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = _userRepository.Get(id);
+            var user = _userRepository.Get(id);
             if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(user);
+
+            var userViewModel = Mapper.Map<UserViewModel>(user);
+            return View(userViewModel);
         }
 
         // GET: Users/Create
@@ -45,13 +61,15 @@ namespace UserRegistrationApp.Controllers
         // POST: Users/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,userName,FirstName,MiddleName,LastName,Email,Phone,Address,Password")] User user)
+        public ActionResult Create([Bind(Include = "Id,userName,FirstName,MiddleName,LastName,Email,Phone,Address,Password")] UserViewModel user)
         {
             if (ModelState.IsValid)
             {
-                _userRepository.Add(user);
+                var userToAdd = Mapper.Map<User>(user);
+                _userRepository.Add(userToAdd);
                 return RedirectToAction("Index");
             }
 
@@ -65,12 +83,15 @@ namespace UserRegistrationApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = _userRepository.Get(id);
+            var user = _userRepository.Get(id);
             if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(user);
+
+            var userToView = Mapper.Map<UserViewModel>(user);
+
+            return View(userToView);
         }
 
         // POST: Users/Edit/5
@@ -78,11 +99,12 @@ namespace UserRegistrationApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,userName,FirstName,MiddleName,LastName,Email,Phone,Address,Password")] User user)
+        public ActionResult Edit([Bind(Include = "Id,userName,FirstName,MiddleName,LastName,Email,Phone,Address,Password")] UserViewModel user)
         {
             if (ModelState.IsValid)
             {
-                _userRepository.Update(user);
+                var userToEdit = Mapper.Map<User>(user);
+                _userRepository.Update(userToEdit);
                 return RedirectToAction("Index");
             }
             return View(user);
@@ -100,7 +122,9 @@ namespace UserRegistrationApp.Controllers
             {
                 return HttpNotFound();
             }
-            return View(user);
+
+            var userToDeleteViewModel = Mapper.Map<UserViewModel>(user);
+            return View(userToDeleteViewModel);
         }
 
         // POST: Users/Delete/5
